@@ -102,3 +102,6 @@ ENV/
 
 # Django project settings
 settings.py
+
+# Editor workspace settings
+.vscode/
