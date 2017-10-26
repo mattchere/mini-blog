@@ -105,3 +105,6 @@ settings.py
 
 # Editor workspace settings
 .vscode/
+
+# Database
+*.sqlite3
