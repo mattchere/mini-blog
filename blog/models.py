@@ -8,6 +8,9 @@ class Blogger(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     bio = models.TextField()
 
+    def __str__(self):
+        return self.user.username
+
 
 class BlogPost(models.Model):
     """
@@ -21,6 +24,9 @@ class BlogPost(models.Model):
     class Meta:
         ordering = ["-post_date"]
 
+    def __str__(self):
+        return self.title
+
 
 class Comment(models.Model):
     """
@@ -30,4 +36,7 @@ class Comment(models.Model):
     blog_post = models.ForeignKey(BlogPost, on_delete=models.CASCADE)
     post_date = models.DateTimeField(auto_now_add=True)
     text = models.TextField()
+
+    def __str__(self):
+        return (self.text[:75]) if len(self.text) > 75 else self.text
 
