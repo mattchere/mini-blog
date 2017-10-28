@@ -12,5 +12,15 @@ def index(request):
 
 
 class BlogPostListView(generic.ListView):
+    """
+    Generic view class for a list of all blog posts.
+    """
     model = BlogPost
     paginate_by = 5
+
+
+class BloggerListView(generic.ListView):
+    """
+    Generic view class for a list of all bloggers.
+    """
+    model = Blogger
