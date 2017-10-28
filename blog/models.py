@@ -18,6 +18,9 @@ class BlogPost(models.Model):
     author = models.ForeignKey(Blogger, on_delete=models.CASCADE)
     description = models.TextField()
 
+    class Meta:
+        ordering = ["-post_date"]
+
 
 class Comment(models.Model):
     """
