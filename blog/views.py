@@ -24,3 +24,17 @@ class BloggerListView(generic.ListView):
     Generic view class for a list of all bloggers.
     """
     model = Blogger
+
+
+class BlogPostDetailView(generic.DetailView):
+    """
+    Generic view class for the detail view of each blog post.
+    """
+    model = BlogPost
+
+    
+class BloggerDetailView(generic.DetailView):
+    """
+    Generic view class for the detail view of each blogger.
+    """
+    model = Blogger

@@ -1,5 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.urls import reverse
+
 
 class Blogger(models.Model):
     """
@@ -10,6 +12,9 @@ class Blogger(models.Model):
 
     def __str__(self):
         return self.user.username
+
+    def get_absolute_url(self):
+        return reverse('blogger-detail', args=[str(self.id)])
 
 
 class BlogPost(models.Model):
@@ -25,7 +30,16 @@ class BlogPost(models.Model):
         ordering = ["-post_date"]
 
     def __str__(self):
+        """
+        String for representing the blog post.
+        """
         return self.title
+
+    def get_absolute_url(self):
+        """
+        Returns the url to access a particular blog post.
+        """
+        return reverse('blog-detail', args=[str(self.id)])
 
 
 class Comment(models.Model):
