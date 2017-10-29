@@ -25,13 +25,13 @@
           <li><a href="{% url 'index' %}">Home</a></li>
           <li><a href="{% url 'blogs' %}">All blogs</a></li>
           <li><a href="{% url 'bloggers' %}">All bloggers</a></li>
-          <!-- {% if user.is_authenticated %}
+          {% if user.is_authenticated %}
+          <p></p>
           <li>User: {{ user.get_username }}</li>
-          <li><a href="">My Borrowed</a></li>          
           <li><a href="">Logout</a></li>   
-        {% else %}
+          {% else %}
           <li><a href="">Login</a></li>   
-        {% endif %}  -->
+          {% endif %} 
         </ul>
      {% endblock %}
       </div>
