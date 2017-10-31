@@ -14,6 +14,11 @@
                 <p>{{ comment.commenter }} ({{ comment.post_date }}) - {{ comment.text }}</p>
             </div>
         {% endfor %}
+        {% if user.is_authenticated %}
+            <p><a href="{% url 'comment-create' blogpost.pk %}">Add a new comment</a></p>
+        {% else %}
+            <p><a href="{% url 'login' %}?next={{request.path}}">Login</a> to add a new comment</p>
+        {% endif %}
     </div>
 
 {% endblock %}
