@@ -33,7 +33,7 @@ class BloggerModelTest(TestCase):
         blogger = Blogger.objects.get(id=1)
         self.assertEquals(blogger.get_absolute_url(), '/blog/blogger/1')
 
-        
+
 class BlogPostModel(TestCase):
 
     @classmethod
@@ -61,7 +61,7 @@ class BlogPostModel(TestCase):
         blogpost = BlogPost.objects.get(id=1)
         field_label = blogpost._meta.get_field('author').verbose_name
         self.assertEquals(field_label, 'author')
-        
+
     def test_description_label(self):
         blogpost = BlogPost.objects.get(id=1)
         field_label = blogpost._meta.get_field('description').verbose_name
@@ -84,4 +84,67 @@ class BlogPostModel(TestCase):
         # Check that each blogpost is in reverse chronological order as expected
         for post1, post2 in zip(blogposts, BlogPost.objects.all()):
             self.assertEquals(post1, post2)
-        
+
+
+class CommentModelTest(TestCase):
+
+    def setUp(self):
+        test_user1 = User.objects.create_user(username='testuser1', password='12345')
+        test_user1.save()
+
+        test_user2 = User.objects.create_user(username='testuser2', password='12345')
+        test_user2.save()
+
+        blogger = Blogger.objects.create(user=test_user1, bio='This is a test bio.')
+        post_date = datetime.today()
+        blog_post = BlogPost.objects.create(title='Title', post_date=post_date, author=blogger, description='Testing')
+
+        Comment.objects.create(commenter=test_user2, blog_post=blog_post, post_date=post_date, text='Testing')
+
+    def test_commenter_label(self):
+        comment = Comment.objects.get(id=1)
+        field_label = comment._meta.get_field('commenter').verbose_name
+        self.assertEquals(field_label, 'commenter')
+
+
+    def test_blog_post_label(self):
+        comment = Comment.objects.get(id=1)
+        field_label = comment._meta.get_field('blog_post').verbose_name
+        self.assertEquals(field_label, 'blog post')
+
+    def test_post_date_label(self):
+        comment = Comment.objects.get(id=1)
+        field_label = comment._meta.get_field('post_date').verbose_name
+        self.assertEquals(field_label, 'post date')
+
+    def test_text_label(self):
+        comment = Comment.objects.get(id=1)
+        field_label = comment._meta.get_field('text').verbose_name
+        self.assertEquals(field_label, 'text')
+
+    def test_object_name_is_75_chars_of_text(self):
+        text = 'a' * 76
+        user = User.objects.get(id=1)
+        blog_post = BlogPost.objects.get(id=1)
+
+        comment = Comment.objects.create(commenter=user, blog_post=blog_post, post_date=datetime.today(), text=text)
+
+        expected_text = 'a' * 75
+        self.assertEquals(expected_text, str(comment))
+
+    def test_ordering(self):
+        # Setup data for new comment
+        later_date = datetime.today() + timedelta(days=1)
+        user = User.objects.get(id=1)
+        blog_post = BlogPost.objects.get(id=1)
+
+        # Create new comment at a later date
+        Comment.objects.create(commenter=user, blog_post=blog_post, post_date=later_date, text='Testing2')
+
+        # Order all comments chronological order for testing
+        comments = list(Comment.objects.all())
+        comments.sort(key=lambda x: x.post_date)
+
+        # Check that each comment is in chronological order as expected
+        for c1, c2 in zip(comments, Comment.objects.all()):
+            self.assertEquals(c1, c2)
